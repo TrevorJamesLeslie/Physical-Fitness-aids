@@ -27,7 +27,7 @@ if platform.system() == "Windows":
 from playsound import playsound
 
 def beep_winsound():
-    winsound.Beep(1000, 200)  # 1000 Hz for 200 ms
+    winsound.Beep(1000, 200)  # 1000 Hz for 500 ms
 
 def beep_playsound():
     playsound('beep.wav', block=False)
