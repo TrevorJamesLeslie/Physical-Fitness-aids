@@ -35,13 +35,13 @@ def beep_playsound():
 def beep_unix():
     os.system("printf '\a'")  # Print the bell character
 
-def calculate_spm(interval):
-    return 60 / interval
+def spm_to_interval(spm):
+    return 60 / spm
 
-def beep_test(initial_interval=3.00, final_interval=2.14, duration=60, sound_method='default'):
-    print("Adjustable Beep Test for Rowing")
-    print("Press 'q' to quit, 'up' to increase interval, 'down' to decrease interval")
-    print(f"Initial interval: {initial_interval:.2f} seconds")
+def beep_test(initial_spm=20, min_spm=20, max_spm=28, duration=60, sound_method='default'):
+    print("Adjustable Rowing Beep Test")
+    print("Press 'q' to quit, 'up' to increase SPM, 'down' to decrease SPM")
+    print(f"Initial SPM: {initial_spm}")
     
     # Select beep function based on sound_method and platform
     if sound_method == 'playsound':
@@ -51,27 +51,27 @@ def beep_test(initial_interval=3.00, final_interval=2.14, duration=60, sound_met
     else:
         beep = beep_unix
     
-    interval = initial_interval
+    spm = initial_spm
     start_time = time.time()
     next_beep = start_time
 
     while time.time() - start_time < duration:
         current_time = time.time()
+        interval = spm_to_interval(spm)
         
         if current_time >= next_beep:
             beep()
             next_beep = current_time + interval
-            spm = calculate_spm(interval)
-            print(f"Beep! Current interval: {interval:.2f} seconds | Stroke Rate: {spm:.1f} SPM")
+            print(f"Beep! Current SPM: {spm:.1f} | Interval: {interval:.2f} seconds")
 
         if keyboard.is_pressed('q'):
             print("Test ended by user")
             break
-        elif keyboard.is_pressed('up') and interval < 3.00:
-            interval = min(interval + 0.01, 3.00)
+        elif keyboard.is_pressed('up') and spm < max_spm:
+            spm = min(spm + 0.5, max_spm)
             time.sleep(0.1)  # Prevent multiple rapid adjustments
-        elif keyboard.is_pressed('down') and interval > 2.14:
-            interval = max(interval - 0.01, 2.14)
+        elif keyboard.is_pressed('down') and spm > min_spm:
+            spm = max(spm - 0.5, min_spm)
             time.sleep(0.1)  # Prevent multiple rapid adjustments
 
     print("Test completed")
