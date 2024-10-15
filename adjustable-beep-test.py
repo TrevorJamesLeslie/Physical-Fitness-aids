@@ -23,7 +23,7 @@ import os
 from playsound import playsound
 
 def beep_playsound():
-    playsound('long_beep.wav', block=False)
+    playsound('beep.wav', block=False)
 
 def beep_unix():
     os.system("printf '\a'")  # Print the bell character
