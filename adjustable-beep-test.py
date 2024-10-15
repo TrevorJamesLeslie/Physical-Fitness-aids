@@ -20,10 +20,17 @@ import time
 import keyboard
 import platform
 import os
+
+# Import sound modules
+if platform.system() == "Windows":
+    import winsound
 from playsound import playsound
 
+def beep_winsound():
+    winsound.Beep(1000, 200)  # 1000 Hz for 200 ms
+
 def beep_playsound():
-    playsound('long_beep.wav', block=False)
+    playsound('beep.wav', block=False)
 
 def beep_unix():
     os.system("printf '\a'")  # Print the bell character
@@ -31,14 +38,16 @@ def beep_unix():
 def spm_to_interval(spm):
     return 60 / spm
 
-def beep_test(initial_spm=20, min_spm=20, max_spm=28, duration=60):
+def beep_test(initial_spm=20, min_spm=20, max_spm=28, duration=60, sound_method='default'):
     print("Adjustable Rowing Beep Test")
     print("Press 'q' to quit, 'up' to increase SPM, 'down' to decrease SPM")
     print(f"Initial SPM: {initial_spm}")
     
-    # Select beep function based on platform
-    if platform.system() == "Windows" or platform.system() == "Darwin":  # Windows or macOS
+    # Select beep function based on sound_method and platform
+    if sound_method == 'playsound':
         beep = beep_playsound
+    elif platform.system() == "Windows":
+        beep = beep_winsound
     else:
         beep = beep_unix
     
@@ -68,4 +77,5 @@ def beep_test(initial_spm=20, min_spm=20, max_spm=28, duration=60):
     print("Test completed")
 
 if __name__ == "__main__":
-    beep_test()
+    # You can change 'default' to 'playsound' to use playsound instead of winsound/unix beep
+    beep_test(sound_method='default')
