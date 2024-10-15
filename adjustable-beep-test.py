@@ -78,4 +78,4 @@ def beep_test(initial_spm=20, min_spm=20, max_spm=28, duration=60, sound_method=
 
 if __name__ == "__main__":
     # You can change 'default' to 'playsound' to use playsound instead of winsound/unix beep
-    beep_test(sound_method='default')
+    beep_test(sound_method='playsound')
